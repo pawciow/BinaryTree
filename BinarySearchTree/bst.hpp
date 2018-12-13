@@ -5,13 +5,19 @@
 #include <cstddef>
 #include <iostream>
 
-template <typename T> class BinarySearchTree : private Node<T>
+template <typename T> class BinarySearchTree 
+	: private Node<T>
 {
 public:
 	BinarySearchTree(std::initializer_list<T> list);
 	using NodePtr = std::unique_ptr< Node<T> >;
-	void walkTree();
 	void expandTree(T valueToAdd);
+
+	void walkTree();
+
+//	std::unique_ptr< Node<T> > & treeSearch(T valueToFind);
+	std::unique_ptr< Node<T> > & iterativeTreeSearch(T valueToFind);
+
 private:
 	NodePtr _root;
 	void visitNode(NodePtr &  visitingNode) const;
@@ -58,4 +64,22 @@ template <typename T>
 void BinarySearchTree<T>::expandTree(T valueToAdd)
 {
 	_root->addChild(valueToAdd);
+}
+
+template <typename T>
+std::unique_ptr< Node<T> > & BinarySearchTree<T>::iterativeTreeSearch(T valueToFind)
+{
+	const std::unique_ptr< Node<T> > & checkingNode = _root;
+	while (checkingNode & checkingNode->getValue() != valueToFind)
+	{
+		if (checkingNode->getValue() < valueToFind)
+		{
+			checkingNode = checkingNode->getLeftChild();
+		}
+		else
+		{
+			checkingNode = checkingNode->getRightChild();
+		}
+	}
+	return checkingNode;
 }
