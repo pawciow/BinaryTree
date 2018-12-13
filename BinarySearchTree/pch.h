@@ -9,6 +9,8 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include "node.hpp"
+#include "bst.hpp"
 // TODO: w tym miejscu dodaj nagłówki, które mają być wstępnie kompilowane
 
 #endif //PCH_H

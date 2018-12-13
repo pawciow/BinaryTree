@@ -3,9 +3,15 @@
 
 #include "pch.h"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 int main()
 {
+	BinarySearchTree<int> example = { 150,20,300 };
+	for (int i = 0; i < 10000; i++)
+		example.expandTree(std::rand());
+	example.walkTree();
     std::cout << "Hello World!\n"; 
 }
 

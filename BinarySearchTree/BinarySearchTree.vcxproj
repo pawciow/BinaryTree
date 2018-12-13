@@ -151,6 +151,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bst.hpp" />
+    <ClInclude Include="node.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
