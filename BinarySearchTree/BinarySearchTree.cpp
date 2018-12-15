@@ -8,11 +8,12 @@
 int main()
 {
 	BinarySearchTree<int> example = { 150,20,300 };
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 100; i++)
 		example.expandTree(std::rand());
-	//example.walkTree();
-	example.iterativeTreeSearch(300);
-    std::cout << "Hello World!\n"; 
+	example.walkTree();
+	auto & e = example.findNode(20);
+
+	std::cout << "I found this value: " << e->getValue() << "\n";
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania

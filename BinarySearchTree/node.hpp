@@ -14,7 +14,7 @@ public:
 	bool isChildInitialized(const std::unique_ptr < Node<T> >& checkingChild) const;
 	void addChild(T value);
 	void printValue() const;
-	T getValue() { return _value; }
+	T & getValue() { return _value; }
 	NodePtr & getRightChild();
 	NodePtr & getLeftChild();
 	~Node() = default;

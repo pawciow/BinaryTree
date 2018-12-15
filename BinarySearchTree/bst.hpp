@@ -14,13 +14,13 @@ public:
 	void expandTree(T valueToAdd);
 
 	void walkTree();
-
-//	std::unique_ptr< Node<T> > & treeSearch(T valueToFind);
-	std::unique_ptr< Node<T> > & iterativeTreeSearch(T valueToFind);
+	NodePtr & findNode(T valueToFind);
 
 private:
 	NodePtr _root;
 	void visitNode(NodePtr &  visitingNode) const;
+	NodePtr & treeSearch(NodePtr & checkingNode, T valueToFind);
+	//	std::unique_ptr< Node<T> > & iterativeTreeSearch(T valueToFind);
 };
 
 template<typename T>
@@ -37,6 +37,12 @@ BinarySearchTree<T>::BinarySearchTree(std::initializer_list<T> list)
 			_root = std::make_unique<Node <T> >(e);
 		}
 	}
+}
+
+template <typename T>
+void BinarySearchTree<T>::expandTree(T valueToAdd)
+{
+	_root->addChild(valueToAdd);
 }
 
 template<typename T>
@@ -60,12 +66,28 @@ void BinarySearchTree<T>::walkTree()
 	visitNode(_root);
 }
 
+
+
 template <typename T>
-void BinarySearchTree<T>::expandTree(T valueToAdd)
+std::unique_ptr<Node<T> > & BinarySearchTree<T>::findNode(T valueToFind)
 {
-	_root->addChild(valueToAdd);
+	return treeSearch(_root, valueToFind);
 }
 
+template <typename T>
+std::unique_ptr< Node<T> > & BinarySearchTree<T>::treeSearch(std::unique_ptr< Node<T> > & checkingNode,T valueToFind)
+{
+	if (checkingNode || checkingNode->getValue() == valueToFind)
+		return checkingNode;
+
+	if (valueToFind < checkingNode->getValue())
+		return treeSearch(checkingNode->getLeftChild(), valueToFind);
+	else
+		return  treeSearch(checkingNode->getRightChild(), valueToFind);
+}
+
+
+/*
 template <typename T>
 std::unique_ptr< Node<T> > & BinarySearchTree<T>::iterativeTreeSearch(T valueToFind)
 {
@@ -83,3 +105,4 @@ std::unique_ptr< Node<T> > & BinarySearchTree<T>::iterativeTreeSearch(T valueToF
 	}
 	return checkingNode;
 }
+*/
