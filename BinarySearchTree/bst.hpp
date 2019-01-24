@@ -77,7 +77,7 @@ std::unique_ptr<Node<T> > & BinarySearchTree<T>::findNode(T valueToFind)
 template <typename T>
 std::unique_ptr< Node<T> > & BinarySearchTree<T>::treeSearch(std::unique_ptr< Node<T> > & checkingNode,T valueToFind)
 {
-	if (checkingNode || checkingNode->getValue() == valueToFind)
+	if (!checkingNode || checkingNode->getValue() == valueToFind)
 		return checkingNode;
 
 	if (valueToFind < checkingNode->getValue())
