@@ -16,6 +16,7 @@ public:
 	void walkTree();
 	NodePtr & findNode(T valueToFind);
 
+
 private:
 	NodePtr _root;
 	void visitNode(NodePtr &  visitingNode) const;
