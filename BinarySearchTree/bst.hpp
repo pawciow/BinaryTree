@@ -10,18 +10,21 @@ template <typename T> class BinarySearchTree
 {
 public:
 	BinarySearchTree(std::initializer_list<T> list);
-	using NodePtr = std::unique_ptr< Node<T> >;
+	using NodePtr = std::shared_ptr< Node<T> >;
 	void expandTree(T valueToAdd);
 
 	void walkTree();
-	NodePtr & findNode(T valueToFind);
-
+	NodePtr findNode(T valueToFind);
+	NodePtr findMinimum();
+	NodePtr findMaximum();
 
 private:
 	NodePtr _root;
+
 	void visitNode(NodePtr &  visitingNode) const;
-	NodePtr & treeSearch(NodePtr & checkingNode, T valueToFind);
-	//	std::unique_ptr< Node<T> > & iterativeTreeSearch(T valueToFind);
+	NodePtr treeSearch(NodePtr & checkingNode, T valueToFind);
+	NodePtr iterativeTreeSearch(T valueToFind);
+
 };
 
 template<typename T>
@@ -35,7 +38,7 @@ BinarySearchTree<T>::BinarySearchTree(std::initializer_list<T> list)
 		}
 		else
 		{
-			_root = std::make_unique<Node <T> >(e);
+			_root = std::make_shared<Node <T> >(e);
 		}
 	}
 }
@@ -47,7 +50,7 @@ void BinarySearchTree<T>::expandTree(T valueToAdd)
 }
 
 template<typename T>
-void BinarySearchTree<T>::visitNode(std::unique_ptr< Node<T> > & visitingNode) const
+void BinarySearchTree<T>::visitNode(std::shared_ptr< Node<T> > & visitingNode) const
 {
 	if (visitingNode->getLeftChild())
 	{
@@ -70,13 +73,14 @@ void BinarySearchTree<T>::walkTree()
 
 
 template <typename T>
-std::unique_ptr<Node<T> > & BinarySearchTree<T>::findNode(T valueToFind)
+std::shared_ptr<Node<T> > BinarySearchTree<T>::findNode(T valueToFind)
 {
-	return treeSearch(_root, valueToFind);
+	// return treeSearch(_root, valueToFind);
+	return iterativeTreeSearch(valueToFind);
 }
 
 template <typename T>
-std::unique_ptr< Node<T> > & BinarySearchTree<T>::treeSearch(std::unique_ptr< Node<T> > & checkingNode,T valueToFind)
+std::shared_ptr< Node<T> > BinarySearchTree<T>::treeSearch(std::shared_ptr< Node<T> > & checkingNode,T valueToFind)
 {
 	if (!checkingNode || checkingNode->getValue() == valueToFind)
 		return checkingNode;
@@ -88,14 +92,14 @@ std::unique_ptr< Node<T> > & BinarySearchTree<T>::treeSearch(std::unique_ptr< No
 }
 
 
-/*
+
 template <typename T>
-std::unique_ptr< Node<T> > & BinarySearchTree<T>::iterativeTreeSearch(T valueToFind)
+std::shared_ptr< Node<T> > BinarySearchTree<T>::iterativeTreeSearch(T valueToFind)
 {
-	const std::unique_ptr< Node<T> > & checkingNode = _root;
-	while (checkingNode & checkingNode->getValue() != valueToFind)
+	NodePtr checkingNode = _root;
+	while (checkingNode && checkingNode->getValue() != valueToFind)
 	{
-		if (checkingNode->getValue() < valueToFind)
+		if (valueToFind < checkingNode->getValue())
 		{
 			checkingNode = checkingNode->getLeftChild();
 		}
@@ -106,4 +110,25 @@ std::unique_ptr< Node<T> > & BinarySearchTree<T>::iterativeTreeSearch(T valueToF
 	}
 	return checkingNode;
 }
-*/
+
+template<typename T>
+std::shared_ptr< Node<T> > BinarySearchTree<T>::findMinimum()
+{
+	NodePtr minimum = _root;
+	while (minimum->getLeftChild())
+	{
+		minimum = minimum->getLeftChild();
+	}
+	return minimum;
+}
+
+template<typename T>
+std::shared_ptr< Node<T> > BinarySearchTree<T>::findMaximum()
+{
+	NodePtr minimum = _root;
+	while (minimum->getRightChild())
+	{
+		minimum = minimum->getRightChild();
+	}
+	return minimum;
+}

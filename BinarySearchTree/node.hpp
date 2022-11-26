@@ -10,8 +10,8 @@ template <typename T> class Node
 public:
 	Node() = default;
 	Node(T value);
-	using NodePtr = std::unique_ptr< Node<T> >;
-	bool isChildInitialized(const std::unique_ptr < Node<T> >& checkingChild) const;
+	using NodePtr = std::shared_ptr< Node<T> >;
+	bool isChildInitialized(const std::shared_ptr < Node<T> >& checkingChild) const;
 	void addChild(T value);
 	void printValue() const;
 	T & getValue() { return _value; }
@@ -29,13 +29,13 @@ template <typename T>
 Node<T>::Node(T value) : _value(value) {}
 
 template <typename T>
-std::unique_ptr< Node<T> > & Node<T>::getLeftChild()
+std::shared_ptr< Node<T> > & Node<T>::getLeftChild()
 {
 	return _leftChild;
 }
 
 template <typename T>
-std::unique_ptr< Node<T> > & Node<T>::getRightChild()
+std::shared_ptr< Node<T> > & Node<T>::getRightChild()
 {
 	return _rightChild;
 }
@@ -48,18 +48,18 @@ void Node<T>::addChild(T value)
 		if (isChildInitialized(_leftChild))
 			_leftChild->addChild(value);
 		else
-			_leftChild = std::make_unique<Node<T>>(value);
+			_leftChild = std::make_shared<Node<T>>(value);
 	}
 	else
 	{
 		if (isChildInitialized(_rightChild))
 			_rightChild->addChild(value);
 		else
-			_rightChild = std::make_unique<Node<T>>(value);
+			_rightChild = std::make_shared<Node<T>>(value);
 	}
 }
 template<typename T>
-bool Node<T>::isChildInitialized(const std::unique_ptr < Node<T> > & checkingChild) const
+bool Node<T>::isChildInitialized(const std::shared_ptr < Node<T> > & checkingChild) const
 {
 	return checkingChild.operator bool();
 }
